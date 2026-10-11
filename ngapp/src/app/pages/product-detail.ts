@@ -10,7 +10,10 @@ import { ProductService } from '../services/product.service';
   selector: 'app-product-detail',
   imports: [RouterLink, CurrencyPipe, DatePipe],
   template: `
-    <a routerLink="/products" class="btn btn-link px-0 mb-3">← Back to catalogue</a>
+    <a routerLink="/products" class="back-catalogue-link">
+      <span class="back-catalogue-icon" aria-hidden="true">←</span>
+      <span><small>Navigation</small>Back to catalogue</span>
+    </a>
 
     @if (loading()) {
       <div class="text-center py-5"><div class="spinner-border text-primary" role="status"></div></div>
@@ -19,45 +22,27 @@ import { ProductService } from '../services/product.service';
     } @else if (product(); as p) {
       <div class="row g-4">
         <div class="col-12 col-md-5">
-          <img [src]="p.images[0] ?? p.thumbnail" [alt]="p.title" class="img-fluid rounded bg-light w-100" />
-          <div class="d-flex gap-2 mt-2 flex-wrap">
-            @for (img of p.images.slice(1); track img) {
-              <img [src]="img" [alt]="p.title" width="72" height="72" class="rounded bg-light border" />
-            }
-          </div>
+          <img [src]="p.thumbnail" [alt]="p.title" class="img-fluid rounded bg-light w-100" />
         </div>
         <div class="col-12 col-md-7">
-          <span class="badge text-bg-secondary mb-2">{{ p.category }}</span>
+          <span class="badge text-bg-secondary mb-2">{{ p.category.name }}</span>
           <h1 class="h3">{{ p.title }}</h1>
-          @if (p.brand) { <p class="text-muted mb-1">by {{ p.brand }}</p> }
-          <p class="fs-4 fw-bold text-primary mb-1">
-            {{ p.price | currency }}
-            <small class="badge text-bg-success fs-6">-{{ p.discountPercentage }}%</small>
+          <p class="fs-4 fw-bold text-primary mb-1">{{ p.price | currency }}</p>
+          <p>
+            @if (p.stock > 0) {
+              <span class="badge text-bg-success">In stock ({{ p.stock }})</span>
+            } @else {
+              <span class="badge text-bg-danger">Out of stock</span>
+            }
           </p>
-          <p>⭐ {{ p.rating }} · {{ p.availabilityStatus }} ({{ p.stock }} in stock)</p>
           <p>{{ p.description }}</p>
           <ul class="list-unstyled small text-muted">
-            <li>SKU: {{ p.sku }}</li>
-            <li>Weight: {{ p.weight }}</li>
-            <li>Min. order: {{ p.minimumOrderQuantity }}</li>
-            <li>Warranty: {{ p.warrantyInformation }}</li>
-            <li>Shipping: {{ p.shippingInformation }}</li>
-            <li>Returns: {{ p.returnPolicy }}</li>
+            <li>ID: {{ p.id }}</li>
+            <li>Created: {{ p.createdAt | date: 'medium' }}</li>
+            <li>Updated: {{ p.updatedAt | date: 'medium' }}</li>
           </ul>
-          <div class="mb-3">
-            @for (t of p.tags; track t) { <span class="badge rounded-pill text-bg-light border me-1">#{{ t }}</span> }
-          </div>
         </div>
       </div>
-
-      <h2 class="h5 mt-4">Reviews</h2>
-      @for (r of p.reviews; track r.date + r.reviewerEmail) {
-        <div class="border rounded p-3 mb-2">
-          <strong>{{ r.reviewerName }}</strong> — ⭐ {{ r.rating }}
-          <small class="text-muted ms-2">{{ r.date | date: 'mediumDate' }}</small>
-          <p class="mb-0">{{ r.comment }}</p>
-        </div>
-      }
     }
   `,
 })

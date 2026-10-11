@@ -1,0 +1,40 @@
+@base = http://localhost:4000/api
+
+### list with pagination, search and filter
+GET {{base}}/products?limit=5&skip=0
+###
+GET {{base}}/products?q=phone&category=smartphones
+
+### one product
+GET {{base}}/products/1
+
+### create
+POST {{base}}/products
+Content-Type: application/json
+
+{
+  "title": "My product",
+  "description": "Created from the lab",
+  "price": 19.99,
+  "thumbnail": "https://cdn.dummyjson.com/product-images/1/thumbnail.webp",
+  "stock": 10,
+  "category": "lab"
+}
+
+### invalid body -> 400
+POST {{base}}/products
+Content-Type: application/json
+
+{ "title": "x", "price": -5 }
+
+### update
+PATCH {{base}}/products/1
+Content-Type: application/json
+
+{ "price": 9.5 }
+
+### delete
+DELETE {{base}}/products/101
+
+### not found -> 404
+GET {{base}}/products/99999

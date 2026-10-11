@@ -7,18 +7,17 @@ import { Product } from '../models/product';
   selector: 'app-product-card',
   imports: [RouterLink, CurrencyPipe],
   template: `
-    <div class="card h-100 shadow-sm">
-      <img [src]="product().thumbnail" [alt]="product().title" class="card-img-top bg-light"
-           style="aspect-ratio: 1 / 1; object-fit: contain;" loading="lazy" />
-      <div class="card-body d-flex flex-column">
-        <h2 class="h6 card-title">{{ product().title }}</h2>
-        <p class="fw-bold text-primary mb-2">{{ product().price | currency }}</p>
-        <p class="card-text text-muted small flex-grow-1">{{ excerpt() }}</p>
-        <a [routerLink]="['/products', product().id]" class="btn btn-outline-primary btn-sm mt-2">
-          View details
+    <article class="product-card">
+      <div class="product-card-image"><img [src]="product().thumbnail" [alt]="product().title" loading="lazy" /></div>
+      <div class="product-card-body">
+        <h2>{{ product().title }}</h2>
+        <p class="product-card-price">{{ product().price | currency }}</p>
+        <p class="product-card-description">{{ excerpt() }}</p>
+        <a [routerLink]="['/products', product().id]" class="product-card-link">
+          View details <span aria-hidden="true">→</span>
         </a>
       </div>
-    </div>
+    </article>
   `,
 })
 export class ProductCard {

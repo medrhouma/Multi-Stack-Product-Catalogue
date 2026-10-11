@@ -1,43 +1,33 @@
-export interface Review {
-  rating: number;
-  comment: string;
-  date: string;
-  reviewerName: string;
-  reviewerEmail: string;
+export interface Category {
+  id: number;
+  name: string;
+  productCount?: number;
 }
 
 export interface Product {
   id: number;
   title: string;
   description: string;
-  category: string;
   price: number;
-  discountPercentage: number;
-  rating: number;
-  stock: number;
-  tags: string[];
-  brand?: string;
-  sku: string;
-  weight: number;
-  warrantyInformation: string;
-  shippingInformation: string;
-  availabilityStatus: string;
-  returnPolicy: string;
-  minimumOrderQuantity: number;
   thumbnail: string;
-  images: string[];
-  reviews: Review[];
+  stock: number;
+  category: Category;
+  createdAt: string;
+  updatedAt: string;
 }
 
-export interface ProductsResponse {
+export interface ProductPage {
   products: Product[];
   total: number;
-  skip: number;
   limit: number;
+  skip: number;
 }
 
-export interface Category {
-  slug: string;
-  name: string;
-  url: string;
+export interface ProductInput {
+  title: string;
+  description: string;
+  price: number;
+  thumbnail: string;
+  stock: number;
+  category: string;
 }

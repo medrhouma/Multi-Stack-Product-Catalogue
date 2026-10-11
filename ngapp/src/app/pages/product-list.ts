@@ -10,9 +10,12 @@ import { ProductService } from '../services/product.service';
   selector: 'app-product-list',
   imports: [ProductCard],
   template: `
-    <h1 class="h3 mb-3">Product catalogue</h1>
+    <div class="catalogue-heading">
+      <div><p class="catalogue-eyebrow">Discover something useful</p><h1>Product catalogue</h1></div>
+      <span>{{ total() }} products</span>
+    </div>
 
-    <div class="row g-2 mb-4">
+    <div class="catalogue-filters row g-2 mb-4">
       <div class="col-12 col-md-6">
         <div class="input-group">
           <input #search type="search" class="form-control" placeholder="Search products…"
@@ -21,12 +24,12 @@ import { ProductService } from '../services/product.service';
         </div>
       </div>
       <div class="col-12 col-md-6">
-        <select #cat class="form-select" (change)="onCategory(cat.value)">
-          <option value="" [selected]="category() === ''">All categories</option>
-          @for (c of categories(); track c.slug) {
-            <option [value]="c.slug" [selected]="c.slug === category()">{{ c.name }}</option>
-          }
-        </select>
+       <select #cat class="form-select" (change)="onCategory(cat.value)">
+  <option value="" [selected]="category() === ''">All categories</option>
+  @for (c of categories(); track c.id) {
+    <option [value]="c.name" [selected]="c.name === category()">{{ c.name }}</option>
+  }
+</select>
       </div>
     </div>
 

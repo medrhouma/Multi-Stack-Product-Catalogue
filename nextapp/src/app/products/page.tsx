@@ -12,7 +12,7 @@ function href(page: number, q: string, category: string): string {
   const p = new URLSearchParams();
   if (page > 1) p.set('page', String(page));
   if (q) p.set('q', q);
-  else if (category) p.set('category', category);
+  if (category) p.set('category', category);
   const qs = p.toString();
   return qs ? `/products?${qs}` : '/products';
 }
@@ -32,9 +32,12 @@ export default async function ProductsPage({ searchParams }: PageProps) {
 
   return (
     <>
-      <h1 className="mb-4 text-2xl font-bold">Product catalogue</h1>
+      <div className="catalogue-heading">
+        <div><p className="catalogue-eyebrow">Discover something useful</p><h1>Product catalogue</h1></div>
+        <span>{data.total} products</span>
+      </div>
 
-      <form action="/products" className="mb-6 grid gap-2 md:grid-cols-2">
+      <form action="/products" className="catalogue-filters">
         <div className="flex gap-2">
           <input
             type="search"
@@ -52,7 +55,7 @@ export default async function ProductsPage({ searchParams }: PageProps) {
         >
           <option value="">All categories</option>
           {categories.map((c) => (
-            <option key={c.slug} value={c.slug}>
+            <option key={c.id} value={c.name}>
               {c.name}
             </option>
           ))}
@@ -63,8 +66,8 @@ export default async function ProductsPage({ searchParams }: PageProps) {
         <p className="rounded bg-blue-50 p-4 text-blue-800">No products found.</p>
       ) : (
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {data.products.map((p) => (
-            <ProductCard key={p.id} product={p} />
+          {data.products.map((p, i) => (
+            <ProductCard key={p.id} product={p} priority={i < 4} />
           ))}
         </div>
       )}
